@@ -9,3 +9,32 @@ body {
 #canvas {
 	background: black;
 }
+
+.controlMenu {
+	border: solid 1px #fff;
+	margin-top: 1px;
+	background: #000;
+}
+
+.control, .label {
+	font-size: 16px;
+	color: #00ff00;
+	background-color: #000;
+	display: block;
+}
+
+.control {
+	margin-bottom: 10px;
+	margin-top:2px;
+}
+
+.menu {
+	display: inline-block;
+	margin: 10px 30px;
+}
+
+#clear {
+	font-size: 20px;
+	display: block;
+}
+
