@@ -4,28 +4,26 @@
 	<link type="text/css" rel="stylesheet" href="style.css">
 	</head>
 <body>
-	<canvas id="canvas" onmousemove="trackMouse(event)"></canvas>
+	<canvas id="canvas" onmousemove="trackMouse(event)" onmousedown="dragging(event)" onmouseup="dropping(event)"></canvas>
 	<script type="text/javascript" src="script.js"></script>
 	<div class="controlMenu">
-		<div class="menu" id="menu1">
+		<!-- <div class="menu" id="menu1">
 			<label for="speed" class="label">Speed:</label>
 			<input type="number" value="0" id="speed" class="control" placeholder="0.1-50?">
 			<label for="acceleration" class="label">Accelaration:</label>
 			<input type="number" value="0" id="acceleration" class="control" placeholder="not available">
-		</div>
-		<div class="menu" id="menu2">
 			<label for="angle" class="label">Angle(degree):</label>
 			<input type="number" value="0" id="angle" class="control" placeholder="">
+		</div> -->
+		<div class="menu" id="menu2">
 			<label for="radius" class="label">Size(radius):</label>
-			<input type="number" value="10" id="radius" class="control" placeholder="0-50?">
-		</div>
-		<div class="menu" id="menu3">
+			<input type="number" value="4" id="radius" class="control" placeholder="1-50?">
 			<label for="maxRadius" class="label">Forcefield Size(radius):</label>
 			<input type="number" value="0" id="maxRadius" class="control" placeholder=">size">
 			<label for="gravity" class="label">Pulling Force:</label>
 			<input type="number" value="0" id="gravity" class="control" placeholder="not available">
 		</div>
-		<div class="menu" id="menu4">
+		<div class="menu" id="menu3">
 			<input type="button" onclick="clearCanvas()" id="clear" value="Clear">
 		</div>
 	</div>
