@@ -7,12 +7,10 @@ var canvas = document.getElementById("canvas"),
 canvas.height = h;
 canvas.width = w;
 
-//initialize checkbox
-var collisionSwitch = document.getElementById("collision");
-
 //Variables
 var particles = [];
 var mouseX, mouseY;
+var collisionChecked = false;
 
 //constants
 var PI = Math.PI;
@@ -386,6 +384,11 @@ function absorb(particle, dif) {
 	particle.sz += 2/dif;
 }
 
+//switch for collision checkbox
+function collisionSwitch(boolean) {
+	collisionChecked = boolean.checked;
+}
+
 //Render
 function update() {
 	//clear previous drawings
@@ -437,9 +440,9 @@ function update() {
 	edgeCollisionCheck();
 
 	//if checkbox is checked, check particles collision
-	// if(collisionSwitch.checked) {
+	if(collisionChecked) {
 		collisionCheck();
-	// }
+	}
 }
 
 //Event Listener coded on CSS to detect mouse moves
@@ -507,6 +510,7 @@ function clearCanvas() {
 //Animation loop starts during initiliaze
 function init() {
 	sFACTOR= Math.sqrt(Math.pow(w,2)+Math.pow(h,2));
+
 	//100 frames per sec
 	setInterval(update, 1000/100);
 }

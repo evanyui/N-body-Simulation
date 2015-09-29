@@ -1,5 +1,5 @@
 <html>
-<head>
+	<head>
 	<title>Particle Simulation</title>
 	<link type="text/css" rel="stylesheet" href="style.css">
 	</head>
@@ -21,7 +21,7 @@
 		</div>
 		<div class="menu" id="menu3">
 			<label for="collision" class="label" id="colLabel">Collision: </label>
-			<input type="checkbox" name="Collision" id="collision" value="collision">
+			<input type="checkbox" id="collision" value="false" onclick="collisionSwitch(this)">
 			<input type="button" onclick="clearCanvas()" id="clear" value="Clear">
 		</div>
 		<p id="notes">Note: Not to physical scale. Mass is size * factor=1.</p>
