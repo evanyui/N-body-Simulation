@@ -359,18 +359,17 @@ function collisionCheck() {
 						var dif = particles[i].sz - particles[j].sz;
 						absorb(particles[i],dif);
 						particles.splice(j,1);
-						break;
+						return;
 					}
 					else if(particles[i].sz < particles[j].sz) {
 						var dif = particles[i].sz - particles[j].sz;
 						absorb(particles[j]);
 						particles.splice(i,1);
-						break;
+						return;
 					}
-					else {	//if same size both dies
+					else {	//if same choose one
 						particles.splice(i,1);
-						particles.splice(j,1);
-						break;
+						return;
 					}			
 				}
 			}		
