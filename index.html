@@ -16,16 +16,16 @@
 			<input type="number" value="0" id="angle" class="control" placeholder="">
 		</div> -->
 		<div class="menu" id="menu2">
-			<label for="radius" class="label">Size(radius):</label>
-			<input type="number" value="4" id="radius" class="control" placeholder="1-50?">
-			<label for="maxRadius" class="label">Forcefield Size(radius):</label>
-			<input type="number" value="0" id="maxRadius" class="control" placeholder=">size">
-			<label for="gravity" class="label">Pulling Force:</label>
-			<input type="number" value="0" id="gravity" class="control" placeholder="not available">
+			<label for="mass" class="label">Mass(radius):</label>
+			<input type="number" value="3" id="mass" class="control" placeholder="1-25?">
 		</div>
 		<div class="menu" id="menu3">
+			<label for="collision" class="label" id="colLabel">Collision: </label>
+			<input type="checkbox" name="Collision" id="collision" value="collision">
 			<input type="button" onclick="clearCanvas()" id="clear" value="Clear">
 		</div>
+		<p id="notes">Note: Not to physical scale. Mass is size * factor=1.</p>
+		
 	</div>
 </body>
 

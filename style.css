@@ -20,7 +20,6 @@ body {
 	font-size: 16px;
 	color: #00ff00;
 	background-color: #000;
-	display: block;
 }
 
 .control {
@@ -29,12 +28,27 @@ body {
 }
 
 .menu {
-	display: inline-block;
 	margin: 10px 30px;
+}
+
+#collision #colLabel{
+	font-size: 20px;
+	display: inline-block;
+	color: #00ff00;
+	height: 30px;
+	width: 30px;
 }
 
 #clear {
 	font-size: 20px;
 	display: block;
+	margin 10px;
 }
+
+#notes {
+	color: #00ff00;
+	font-size: 14px;
+	margin: 10px 30px;
+}
+
 
