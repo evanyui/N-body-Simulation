@@ -390,6 +390,50 @@ function collisionSwitch(boolean) {
 
 //Render
 function update() {
+
+	//always focus on textfield
+	document.getElementById("mass").focus();
+
+	//Get the shortcut control by key pressed
+	document.onkeydown = function(e) {
+	    var key = e.keyCode;
+
+	    if(key == 48)
+			document.getElementById("mass").value += 0;
+	    else if(key == 49)
+			document.getElementById("mass").value += 1;
+	    else if(key == 50)
+			document.getElementById("mass").value += 2;
+	    else if(key == 51)
+			document.getElementById("mass").value += 3;
+		else if(key == 52)
+			document.getElementById("mass").value += 4;
+	    else if(key == 53)
+			document.getElementById("mass").value += 5;
+	    else if(key == 54)
+			document.getElementById("mass").value += 6;
+		else if(key == 55)
+			document.getElementById("mass").value += 7;
+	    else if(key == 56)
+			document.getElementById("mass").value += 8;
+	    else if(key == 57)
+			document.getElementById("mass").value += 9;
+		else if(key == 9) 
+			document.getElementById("mass").value = "";
+		else if(key == 67) 
+			clearCanvas();
+		else if(key == 90 && collisionChecked == true) {
+			document.getElementById("collision").checked = false;
+			collisionChecked = false;
+		}
+		else if(key == 90 && collisionChecked == false) {
+			document.getElementById("collision").checked = true;
+			collisionChecked = true;
+		}
+
+	    if(key) e.preventDefault();		//will not triggered default event
+	}
+
 	//clear previous drawings
 	ctx.clearRect(0,0,w,h);
 
