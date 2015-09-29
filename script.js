@@ -391,9 +391,6 @@ function collisionSwitch(boolean) {
 //Render
 function update() {
 
-	//always focus on textfield
-	document.getElementById("mass").focus();
-
 	//Get the shortcut control by key pressed
 	document.onkeydown = function(e) {
 	    var key = e.keyCode;

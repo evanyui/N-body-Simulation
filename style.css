@@ -42,12 +42,18 @@ body {
 #clear {
 	font-size: 20px;
 	display: block;
-	margin 10px;
+	margin: 10px;
 }
 
-#notes {
+#notes, #instructions {
 	color: #00ff00;
 	font-size: 14px;
+	margin: 10px 30px;
+}
+
+#version {
+	color: #00ff00;
+	font-size: 12px;
 	margin: 10px 30px;
 }
 
