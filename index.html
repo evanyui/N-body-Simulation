@@ -5,7 +5,7 @@
 	</head>
 <body>
 	<canvas id="canvas" onmousemove="trackMouse(event)" onmousedown="dragging(event)" onmouseup="dropping(event)"></canvas>
-	<script type="text/javascript" src="script.js"></script>
+
 	<div class="controlMenu">
 		<!-- <div class="menu" id="menu1">
 			<label for="speed" class="label">Speed:</label>
@@ -17,18 +17,20 @@
 		</div> -->
 		<div class="menu" id="menu2">
 			<label for="mass" class="label">Mass(radius):</label>
-			<input type="number" value="3" id="mass" class="control" placeholder="1-25?">
+			<input type="number" value="2" id="mass" class="control" placeholder="1 ~ 50">
 		</div>
 		<div class="menu" id="menu3">
 			<label for="collision" class="label" id="colLabel">Collision: </label>
 			<input type="checkbox" id="collision" value="false" onclick="collisionSwitch(this)">
 			<input type="button" onclick="clearCanvas()" id="clear" value="Clear">
 		</div>
-		<p id="instructions">Instructions: <br>press "c" to clear. <br>"z" to enable collision. <br>"tab" to clear textfield. Mass size can be input by pressing number key wihtout focus on textbox.</p>
-		<p id="notes">Note: Not to physical scale. Mass is size * factor=1.</p>
-		<p id="version">Particle Simulation. Product of Chuan Yui Teh <br>Version 1.0.0</p>
+		<p id="instructions">Instructions: <br>"Q" to enter insert mode to enable setting mass size by using number keys upon creation (without typing on textbox). <br>Press "Q" again to exit insert mode or click on screen to create particle then exit. <br>"C" to clear. <br>"Z" to enable collision. </p>
+		<p id="notes">Note: Not to physical scale. Mass is size * factor(1). Calculation is based on momentum, centripetal force, and universal gravitational force. Taken constant G as 1.</p>
+		<p id="version">Particle Simulation. A product of Chuan Yui Teh. 2015 <br>Version 1.0.1</p>
 		
 	</div>
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>

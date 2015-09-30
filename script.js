@@ -7,10 +7,21 @@ var canvas = document.getElementById("canvas"),
 canvas.height = h;
 canvas.width = w;
 
+//detects focus
+$("#mass").focusin(function() {
+  focus = true;
+});
+
+$("#mass").focusout(function() {
+  focus = false;
+});
+
 //Variables
 var particles = [];
 var mouseX, mouseY;
 var collisionChecked = false;
+var focus = false;
+var insertMode = false;
 
 //constants
 var PI = Math.PI;
@@ -18,6 +29,61 @@ var VLC_SCALE = 10;		//10 because looks better on screen
 // var G = 1;
 var sFACTOR; 
 var RESIST = 0.1;
+
+//Get the shortcut control by key pressed
+document.onkeydown = function(e) {
+	if(!focus) {
+	    var key = e.keyCode;
+
+	    if(key == 48 && insertMode)
+			document.getElementById("mass").value += 0;
+	    else if(key == 49 && insertMode)
+			document.getElementById("mass").value += 1;
+	    else if(key == 50 && insertMode)
+			document.getElementById("mass").value += 2;
+	    else if(key == 51 && insertMode)
+			document.getElementById("mass").value += 3;
+		else if(key == 52 && insertMode)
+			document.getElementById("mass").value += 4;
+	    else if(key == 53 && insertMode)
+			document.getElementById("mass").value += 5;
+	    else if(key == 54 && insertMode)
+			document.getElementById("mass").value += 6;
+		else if(key == 55 && insertMode)
+			document.getElementById("mass").value += 7;
+	    else if(key == 56 && insertMode)
+			document.getElementById("mass").value += 8;
+	    else if(key == 57 && insertMode)
+			document.getElementById("mass").value += 9;
+		else if(key == 81) {	//this enters insert Mode and clear text
+			document.getElementById("mass").value = "";
+			if (!insertMode) 
+				insertMode = true;
+			else
+				insertMode = false;
+		}
+		else if(key == 67) 
+			clearCanvas();
+		else if(key == 90) {
+			if(collisionChecked == true) {
+				document.getElementById("collision").checked = false;
+				collisionChecked = false;
+			}
+			else {
+				document.getElementById("collision").checked = true;
+				collisionChecked = true;
+			}
+		}
+	}
+}
+
+function notify() {
+	if(insertMode) {
+		ctx.font="20px Courier New";
+		ctx.fillStyle = "#fff";
+		ctx.fillText("[INSERT MODE]",50,50);
+	}
+}
 
 //Event handlers NOT USED YET
 //document.addEventListener("click", onClick);
@@ -132,23 +198,36 @@ function createParticle(a0,b0,af,bf) {
 }
 
 //Create particles color depends on size
+//DONE JUDGE, I CHOSE THIS 
 function colorParticle(sz) {
 	if(sz<1) {
-		return "#00ffff";
-	}
-	else if(sz<5) {
 		return "#fff";
 	}
+	else if(sz<5) {
+		return "#e5f9ff";
+	}
 	else if(sz<10) {
-		return "#ffff00";
+		return "#99eaff";
 	}
 	else if(sz<15) {
-		return "#ffb400";
+		return "#00ccff";
 	}
 	else if(sz<20) {
-		return "#ffa000";
+		return "#876447";
 	}
 	else if(sz<25) { //sz>20
+		return "#cb976b";
+	}
+	else if(sz<30){
+		return "#ffff00";
+	}
+	else if(sz<35) {
+		return "#ffb400";
+	}
+	else if(sz<40) {
+		return "#ffa000";
+	}
+	else if(sz<45) {
 		return "#ff6400";
 	}
 	else {
@@ -339,7 +418,8 @@ function getAcceleration() {
 //edge collision check and delete particles out of canvas
 function edgeCollisionCheck() {
 	for(var i = 0; i < particles.length; i++) {
-		if(particles[i].x > w || particles[i].x < 0 || particles[i].y < 0 || particles[i].y > h) {
+		if(particles[i].x-particles[i].sz > w || particles[i].x+particles[i].sz < 0 
+			|| particles[i].y+particles[i].sz < 0 || particles[i].y-particles[i].sz > h) {
 			//delete from data
 			particles.splice(i,1);
 		}
@@ -353,22 +433,32 @@ function collisionCheck() {
 			if(particles[i].x !== particles[j].x && particles[i].y !== particles[j].y) {
 				//calculate difference from origin to destination
 			 	var d = Math.sqrt(Math.pow((particles[i].x-particles[j].x),2)+Math.pow((particles[i].y-particles[j].y),2));
-				if(d < Math.min(particles[i].sz,particles[j].sz)) {
+				if(d <= Math.abs(particles[i].sz+particles[j].sz)) {
 					//check who is bigger. smaller dies
 					if(particles[i].sz > particles[j].sz) {
 						var dif = particles[i].sz - particles[j].sz;
-						absorb(particles[i],dif);
+						absorb(particles[i],particles[j].sz);
+						//change acceleration
+						accelAftCol(particles[i],particles[j]);
+						//delete data
 						particles.splice(j,1);
 						return;
 					}
 					else if(particles[i].sz < particles[j].sz) {
 						var dif = particles[i].sz - particles[j].sz;
-						absorb(particles[j]);
+						absorb(particles[j],particles[i].sz);
+						//change acceleration
+						accelAftCol(particles[j],particles[i]);
+						//delete data
 						particles.splice(i,1);
 						return;
 					}
 					else {	//if same choose one
-						particles.splice(i,1);
+						absorb(particles[i],particles[j].sz);
+						//change acceleration
+						accelAftCol(particles[i],particles[j]);
+						//delete data
+						particles.splice(j,1);
 						return;
 					}			
 				}
@@ -377,60 +467,47 @@ function collisionCheck() {
 	}
 }
 
+//calculation include acceleration change after collision
+function accelAftCol(p1,p2) {
+	//variable mass
+	var m0 = p1.sz;
+	var m1 = p2.sz;
+
+	//calculate net velocity with momentum
+ 	var da = (p2.dx*m1 + p1.dx*m0)/((m0+m1));			//x-axis
+ 	var db = (p2.dy*m1 + p1.dy*m0)/((m0+m1));			//y-axis
+ 	//calculate degree and decide sign for direction
+ 	var degreeA = getDeg(Math.atan2(db,da));
+ 	var sign = getSign(degreeA);
+ 	//calculate velocity component x and y 
+	//note: the dragging length divided by the screen size decideds the speed
+	var vela = da * sign.x;
+	var velb = db * sign.y;
+	console.log(degreeA);
+	console.log(sign.x);
+	console.log(da);
+	console.log(vela);
+
+	p1.dx = da;
+	p1.dy = db;
+	//set acceleration to zero
+	p1.ddx = 0;
+	p1.ddy = 0;
+}
 
 //Do absorbtion of particles if mass is bigger, by 0.2*mass difference for each absorbtion
-function absorb(particle, dif) {
-	particle.sz += 2/dif;
+function absorb(particle, addition) {
+	particle.sz += addition;
 }
 
 //switch for collision checkbox
 function collisionSwitch(boolean) {
 	collisionChecked = boolean.checked;
+	console.log("Collision is " + collisionChecked);
 }
 
 //Render
 function update() {
-
-	//Get the shortcut control by key pressed
-	document.onkeydown = function(e) {
-	    var key = e.keyCode;
-
-	    if(key == 48)
-			document.getElementById("mass").value += 0;
-	    else if(key == 49)
-			document.getElementById("mass").value += 1;
-	    else if(key == 50)
-			document.getElementById("mass").value += 2;
-	    else if(key == 51)
-			document.getElementById("mass").value += 3;
-		else if(key == 52)
-			document.getElementById("mass").value += 4;
-	    else if(key == 53)
-			document.getElementById("mass").value += 5;
-	    else if(key == 54)
-			document.getElementById("mass").value += 6;
-		else if(key == 55)
-			document.getElementById("mass").value += 7;
-	    else if(key == 56)
-			document.getElementById("mass").value += 8;
-	    else if(key == 57)
-			document.getElementById("mass").value += 9;
-		else if(key == 9) 
-			document.getElementById("mass").value = "";
-		else if(key == 67) 
-			clearCanvas();
-		else if(key == 90 && collisionChecked == true) {
-			document.getElementById("collision").checked = false;
-			collisionChecked = false;
-		}
-		else if(key == 90 && collisionChecked == false) {
-			document.getElementById("collision").checked = true;
-			collisionChecked = true;
-		}
-
-	    if(key) e.preventDefault();		//will not triggered default event
-	}
-
 	//clear previous drawings
 	ctx.clearRect(0,0,w,h);
 
@@ -467,6 +544,9 @@ function update() {
 		// motionChange();
 
 	// }
+
+	//notification
+	notify();
 
 	//update cursor posiiton with cross
 	drawCross();
@@ -515,6 +595,9 @@ function dragging(e) {
 	a0 = e.pageX;
 	b0 = e.pageY;
 	hold = true;
+
+	//cancel input mode
+	insertMode = false;
 }
 
 //When release mouse click
