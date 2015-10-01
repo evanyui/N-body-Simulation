@@ -642,7 +642,7 @@ function drawVector() {
 	ctx.beginPath();
 	ctx.moveTo(a0,b0);
 	ctx.lineTo(mouseX,mouseY);
-	ctx.strokeStyle="rgba(0,0,255,1)";
+	ctx.strokeStyle="rgba(0,255,0,1)";
 	ctx.stroke();
 	ctx.closePath();
 }
