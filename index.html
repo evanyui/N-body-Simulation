@@ -2,11 +2,13 @@
 	<head>
 	<title>Particle Simulation</title>
 	<link type="text/css" rel="stylesheet" href="style.css">
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
 	</head>
 <body>
 	<canvas id="canvas" onmousemove="trackMouse(event)" onmousedown="dragging(event)" onmouseup="dropping(event)"></canvas>
 
-	<div class="controlMenu">
+	<div class="controlMenu" id="menubar">
 		<!-- <div class="menu" id="menu1">
 			<label for="speed" class="label">Speed:</label>
 			<input type="number" value="0" id="speed" class="control" placeholder="0.1-50?">
@@ -24,9 +26,11 @@
 			<input type="checkbox" id="collision" value="false" onclick="collisionSwitch(this)">
 			<input type="button" onclick="clearCanvas()" id="clear" value="Clear">
 		</div>
-		<p id="instructions">Instructions: <br>"Q" to enter insert mode to enable setting mass size by using number keys upon creation (without typing on textbox). <br>Press "Q" again to exit insert mode or click on screen to create particle then exit. <br>"C" to clear. <br>"Z" to enable collision. <br> Use mouse to click on screen to create particle, drag and drop to create particle with constant velocity along dragged path.(Greater the length, larger the initial velocity).</p>
-		<p id="notes">Note: Not to physical scale. Mass is size * factor(1). Calculation is based on momentum, centripetal force, and universal gravitational force. Taken constant G as 1.</p>
-		<p id="version">Particle Simulation. A product of Chuan Yui Teh. 2015 <br>Version 1.0.1</p>
+		<div class="menu" id="menu4">			
+			<input type="button" id="help" onclick="help()" value="Learn More Instructions">
+			<input type="button" id="about" onclick="about()" value="What is this?">
+		</div>
+		<p id="version"><br>Particle Simulation. A product of Chuan Yui Teh. 2015 <br>Version 1.0.1</p>
 		
 	</div>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>

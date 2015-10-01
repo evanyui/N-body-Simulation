@@ -1,4 +1,3 @@
-
 //Initializing canvas
 var canvas = document.getElementById("canvas"),
 		ctx = canvas.getContext("2d"),
@@ -67,6 +66,7 @@ document.onkeydown = function(e) {
 		else if(key == 90) {
 			if(collisionChecked == true) {
 				document.getElementById("collision").checked = false;
+
 				collisionChecked = false;
 			}
 			else {
@@ -79,10 +79,36 @@ document.onkeydown = function(e) {
 
 function notify() {
 	if(insertMode) {
-		ctx.font="20px Courier New";
+		//insert msg
+		ctx.font="18px Courier New";
 		ctx.fillStyle = "#fff";
-		ctx.fillText("[INSERT MODE]",50,50);
+		ctx.fillText("[INSERT MODE]",30,30);
+		//show mass
+		ctx.font="18px Courier New";
+		ctx.fillStyle = "#fff";
+		ctx.fillText("[INPUT MASS: "+document.getElementById("mass").value+"]",200,30);
 	}
+}
+
+function collisionMsg() {
+	if(collisionChecked) {
+		ctx.font="18px Courier New";
+		ctx.fillStyle = "#fff";
+		ctx.fillText("[COLLISION: ON]",w-220,30);
+	}
+	else {
+		ctx.font="18px Courier New";
+		ctx.fillStyle = "#fff";
+		ctx.fillText("[COLLISION: OFF]",w-220,30);
+	}
+}
+
+function help() {
+	swal("Instructions","Shortcut Keys:\nQ - enter/exit insert mode \nC - clear \nZ - turn on/off collision\n\n Controls:\nClick or Drag to create particle on screen\nTotal of 11 different colors depends on the size of particle\n\n*Tips: In insert mode, you can input mass size with number keys upon creation without typing into the textbox below. \n Notice the status at the top left during insert mode.");
+}
+
+function about() {
+	swal("Particle Simulation","This is a particle simulation that simulates particle's movement under the effect of gravitational force from each other.\n\n*Note: Not to physical scale. Mass is size * factor(1). \nTaken constant G as 1. \n\nHave fun!");
 }
 
 //Event handlers NOT USED YET
@@ -547,6 +573,7 @@ function update() {
 
 	//notification
 	notify();
+	collisionMsg();
 
 	//update cursor posiiton with cross
 	drawCross();
@@ -615,7 +642,7 @@ function drawVector() {
 	ctx.beginPath();
 	ctx.moveTo(a0,b0);
 	ctx.lineTo(mouseX,mouseY);
-	ctx.strokeStyle="rgba(0,255,0,1)";
+	ctx.strokeStyle="rgba(0,0,255,1)";
 	ctx.stroke();
 	ctx.closePath();
 }
@@ -633,6 +660,9 @@ function clearCanvas() {
 //Animation loop starts during initiliaze
 function init() {
 	sFACTOR= Math.sqrt(Math.pow(w,2)+Math.pow(h,2));
+
+	//show message
+	swal("Welcome", "Click or drag to create particles. \nScroll down to see control menu bar. \nClick 'Learn more instructions' to learn more. \n\nEnjoy! :)");
 
 	//100 frames per sec
 	setInterval(update, 1000/100);
