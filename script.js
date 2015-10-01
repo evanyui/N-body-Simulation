@@ -662,7 +662,7 @@ function init() {
 	sFACTOR= Math.sqrt(Math.pow(w,2)+Math.pow(h,2));
 
 	//show message
-	swal("Welcome", "Click or drag to create particles. \nScroll down to see control menu bar. \nClick 'Learn more instructions' to learn more. \n\nEnjoy! :)");
+	swal("Welcome", "Click or drag to create particles. \nScroll down to see controls in menu bar. \n\nIf you want to learn more about controls, click 'Learn more instructions' at the bottom. \n\nEnjoy! :)");
 
 	//100 frames per sec
 	setInterval(update, 1000/100);
