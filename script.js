@@ -267,16 +267,13 @@ function drawParticles() {
 		//drawing the particles
 		ctx.beginPath();
 		ctx.arc(particles[i].x,particles[i].y,particles[i].sz,0,PI*2,false);
+		ctx.shadowBlur=20;
+		ctx.shadowColor=colorParticle(particles[i].sz);
 		ctx.closePath();
 		ctx.fillStyle=colorParticle(particles[i].sz);
     	ctx.fill();
 
-    	//drawing the force field of particle 
-    	ctx.beginPath();
-    	ctx.arc(particles[i].x,particles[i].y,particles[i].r,0,PI*2,false);
-    	ctx.closePath();
-    	ctx.strokeStyle="rgba(0,255,255,0.5)";
-    	ctx.stroke();
+
 	} 
 }
 
