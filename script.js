@@ -19,6 +19,7 @@ $("#mass").focusout(function() {
 var particles = [];
 var mouseX, mouseY;
 var collisionChecked = false;
+var shadowChecked = false;
 var focus = false;
 var insertMode = false;
 
@@ -74,6 +75,35 @@ document.onkeydown = function(e) {
 				collisionChecked = true;
 			}
 		}
+		else if(key == 83) {
+			if(shadowChecked == true) {
+				document.getElementById("shadow").checked = false;
+				shadowChecked = false;
+			}
+			else {
+				swal({  title: "Warning",   
+						text: "Turning on shadow might inscrease your cpu usage. \n Are you sure?",   
+						type: "warning",   
+						showCancelButton: true,   
+						confirmButtonColor: "#DD6B55",   
+						confirmButtonText: "Yes",   
+						cancelButtonText: "No",   
+						closeOnConfirm: false,   
+						closeOnCancel: false }, 
+						function(isConfirm){   
+							if (isConfirm) {     
+								swal("Okay", "Shadow effect has turned on. \nTurn it off again if fps drops", "success");   
+								document.getElementById("shadow").checked = true;
+								shadowChecked = true;
+							} 
+							else {     
+								swal("Cancelled", "Shadow remains off.", "error"); 
+								document.getElementById("shadow").checked = false;
+								shadowChecked = false;  
+							} 
+						});
+			}
+		}
 	}
 }
 
@@ -104,7 +134,7 @@ function collisionMsg() {
 }
 
 function help() {
-	swal("Instructions","Shortcut Keys:\nQ - enter/exit insert mode \nC - clear \nZ - turn on/off collision\n\n Controls:\nClick or Drag to create particle on screen\nTotal of 11 different colors depends on the size of particle\n\n*Tips: In insert mode, you can input mass size with number keys upon creation without typing into the textbox below. \n Notice the status at the top left during insert mode.");
+	swal("Instructions","Shortcut Keys:\nQ - enter/exit insert mode \nC - clear \nZ - turn on/off collision\nS - turn on/off glow effect\n\n Controls:\nClick or Drag to create particle on screen\nTotal of 11 different colors depends on the size of particle\nTurn on glow effect to make particles glow\n\n*Tips: In insert mode, you can input mass size with number keys upon creation without typing into the textbox below. \n Notice the status at the top left during insert mode.");
 }
 
 function about() {
@@ -267,13 +297,17 @@ function drawParticles() {
 		//drawing the particles
 		ctx.beginPath();
 		ctx.arc(particles[i].x,particles[i].y,particles[i].sz,0,PI*2,false);
-		ctx.shadowBlur=20;
-		ctx.shadowColor=colorParticle(particles[i].sz);
+		if(shadowChecked) {
+			ctx.shadowBlur=15;
+			ctx.shadowColor=colorParticle(particles[i].sz);
+		}	
+		else {
+			ctx.shadowBlur=0;
+			ctx.shadowColor=null;
+		}
 		ctx.closePath();
 		ctx.fillStyle=colorParticle(particles[i].sz);
     	ctx.fill();
-
-
 	} 
 }
 
@@ -529,6 +563,35 @@ function collisionSwitch(boolean) {
 	console.log("Collision is " + collisionChecked);
 }
 
+function shadowSwitch(boolean) {
+	shadowChecked = boolean.checked;
+	if(shadowChecked == true) {
+		swal({  title: "Warning",   
+						text: "Turning on glow effect might inscrease your cpu usage. \n Are you sure?",   
+						type: "warning",   
+						showCancelButton: true,   
+						confirmButtonColor: "#DD6B55",   
+						confirmButtonText: "Yes",   
+						cancelButtonText: "No",   
+						closeOnConfirm: false,   
+						closeOnCancel: false }, 
+						function(isConfirm){   
+							if (isConfirm) {     
+								swal("Okay", "Glow effect has turned on. \nTurn it off again if fps drops", "success");   
+								shadowChecked = true;
+							} 
+							else {     
+								swal("Cancelled", "glow remains off.", "error"); 
+								document.getElementById("shadow").checked = false;
+								shadowChecked = false;  
+							} 
+						});
+	}
+	else {
+		shadowChecked = false;
+	}
+}
+
 //Render
 function update() {
 	//clear previous drawings
@@ -662,7 +725,7 @@ function init() {
 	swal("Welcome", "Click or drag to create particles. \nScroll down to see controls in menu bar. \n\nTo learn more about advance controls, \nclick on 'Learn More Controls' at the bottom. \n\nEnjoy! :)");
 
 	//100 frames per sec
-	setInterval(update, 1000/100);
+	setInterval(update, 1000/60);
 }
 
 //Initialize after content is loaded
